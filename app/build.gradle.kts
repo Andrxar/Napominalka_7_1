@@ -1,4 +1,4 @@
-// ФИНАЛЬНАЯ, ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ app/build.gradle.kts
+// ФИНАЛЬНАЯ, КАНОНИЧЕСКАЯ КОНФИГУРАЦИЯ app/build.gradle.kts
 
 plugins {
     id("com.android.application") version "8.5.1"
@@ -59,7 +59,7 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    // Compose-библиотеки
+    // Рабочие Compose-библиотеки, которые входят в релиз
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
@@ -67,8 +67,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
     implementation("androidx.navigation:navigation-compose:2.7.7")
     
-    // ----- ВОТ ОНО, РЕШЕНИЕ! -----
-    // Библиотека для превью в студии, ТОЛЬКО для debug-сборки
+    // ----- ФИНАЛЬНОЕ РЕШЕНИЕ -----
+    // Отладочные библиотеки, которые НЕ должны попадать в релиз
+    debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-tooling-preview")
 
     // Остальные зависимости
