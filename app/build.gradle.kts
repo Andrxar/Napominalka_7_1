@@ -1,4 +1,4 @@
-// ПРАВИЛЬНЫЙ И ИСПРАВЛЕННЫЙ КОД ДЛЯ ФАЙЛА app/build.gradle.kts
+// ФИНАЛЬНАЯ, СТАБИЛЬНАЯ КОНФИГУРАЦИЯ app/build.gradle.kts
 
 plugins {
     id("com.android.application") version "8.5.1"
@@ -49,27 +49,29 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
+        kotlinCompilerExtensionVersion = "1.5.8" // Верно для Kotlin 1.9.22
     }
-    
-    // ----- ВОТ НОВЫЙ, ПРАВИЛЬНЫЙ БЛОК -----
-    // Используем aaptOptions для игнорирования сломанного XML-файла
-    aaptOptions {
-        ignoreAssetsPattern = "overlay_view.xml"
-    }
-    // ----- КОНЕЦ ИСПРАВЛЕНИЯ -----
 }
 
+// ----- НАЧАЛО ГЛАВНОГО ИЗМЕНЕНИЯ: БЛОК ЗАВИСИМОСТЕЙ -----
+// Мы используем стабильную версию BOM и позволяем ей управлять версиями
+// всех Compose-библиотек для гарантии совместимости.
 dependencies {
-    // ... ваши зависимости остаются без изменений
-    implementation(platform("androidx.compose:compose-bom:2024.05.00")) 
-    implementation("androidx.activity:activity-compose:1.9.0")
+    // Используем стабильную версию Compose BOM
+    val composeBom = platform("androidx.compose:compose-bom:2024.04.00")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    // Compose-библиотеки (без указания версий, BOM сделает это за нас)
+    implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
+    implementation("androidx.navigation:navigation-compose")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+
+    // Остальные зависимости
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
     implementation("androidx.room:room-runtime:2.6.1")
@@ -77,3 +79,4 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 }
+// ----- КОНЕЦ ГЛАВНОГО ИЗМЕНЕНИЯ -----
