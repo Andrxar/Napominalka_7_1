@@ -63,9 +63,9 @@ android {
         kotlinCompilerExtensionVersion = "1.5.8"
     }
     
-    packagingOptions {
-        resources.excludes.add("**/overlay_view.xml")
-    }
+    //packagingOptions {
+    //    resources.excludes.add("**/overlay_view.xml")
+   // }
 }
 
 dependencies {
