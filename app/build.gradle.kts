@@ -10,20 +10,14 @@ android {
     namespace = "com.example.napominalka"
     compileSdk = 34
 
-    // ----- НАЧАЛО ИЗМЕНЕНИЯ 1: БЛОК ДЛЯ ПОДПИСИ -----
-    // Этот блок будет использоваться только для release-сборки.
-    // Он читает пароли и алиас из секретов GitHub.
     signingConfigs {
         create("release") {
-            // Путь к файлу ключа, который мы создадим в GitHub Actions
             storeFile = file("napominalka-key.jks")
-            // Читаем переменные, которые мы передадим из GitHub Secrets
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
         }
     }
-    // ----- КОНЕЦ ИЗМЕНЕНИЯ 1 -----
 
     defaultConfig {
         applicationId = "com.example.napominalka"
@@ -40,21 +34,16 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // ----- НАЧАЛО ИЗМЕНЕНИЯ 2: ПРИМЕНЕНИЕ ПОДПИСИ -----
-            // Говорим Gradle использовать нашу конфигурацию для release-сборки
             signingConfig = signingConfigs.getByName("release")
-            // ----- КОНЕЦ ИЗМЕНЕНИЯ 2 -----
         }
     }
     compileOptions {
-        // ----- НАЧАЛО ИЗМЕНЕНИЯ 3: ОБНОВЛЕНИЕ ВЕРСИИ JAVA -----
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "17"
     }
-    // ----- КОНЕЦ ИЗМЕНЕНИЯ 3 -----
 
     buildFeatures {
         compose = true
@@ -63,9 +52,12 @@ android {
         kotlinCompilerExtensionVersion = "1.5.8"
     }
     
-    //packagingOptions {
-    //    resources.excludes.add("**/overlay_view.xml")
-   // }
+    // ----- ВОТ НОВЫЙ, ПРАВИЛЬНЫЙ БЛОК -----
+    // Используем aaptOptions для игнорирования сломанного XML-файла
+    aaptOptions {
+        ignoreAssetsPattern = "overlay_view.xml"
+    }
+    // ----- КОНЕЦ ИСПРАВЛЕНИЯ -----
 }
 
 dependencies {
