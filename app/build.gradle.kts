@@ -1,4 +1,4 @@
-// ФИНАЛЬНАЯ, СТАБИЛЬНАЯ КОНФИГУРАЦИЯ app/build.gradle.kts
+// ФИНАЛЬНАЯ, ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ app/build.gradle.kts
 
 plugins {
     id("com.android.application") version "8.5.1"
@@ -53,9 +53,6 @@ android {
     }
 }
 
-// ----- НАЧАЛО ГЛАВНОГО ИЗМЕНЕНИЯ: БЛОК ЗАВИСИМОСТЕЙ -----
-// Мы используем стабильную версию BOM и позволяем ей управлять версиями
-// всех Compose-библиотек для гарантии совместимости.
 dependencies {
     // Используем стабильную версию Compose BOM
     val composeBom = platform("androidx.compose:compose-bom:2024.04.00")
@@ -68,8 +65,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.navigation:navigation-compose")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+
+    // ----- ВОТ ИСПРАВЛЕНИЕ -----
+    // Для navigation-compose нужно явно указать версию
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // Остальные зависимости
     implementation("androidx.core:core-ktx:1.13.1")
@@ -79,4 +79,3 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 }
-// ----- КОНЕЦ ГЛАВНОГО ИЗМЕНЕНИЯ -----
