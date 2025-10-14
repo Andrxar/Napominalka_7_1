@@ -59,17 +59,17 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    // Compose-библиотеки (без указания версий, BOM сделает это за нас)
+    // Compose-библиотеки
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
-
-    // ----- ВОТ ИСПРАВЛЕНИЕ -----
-    // Для navigation-compose нужно явно указать версию
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    
+    // ----- ВОТ ОНО, РЕШЕНИЕ! -----
+    // Библиотека для превью в студии, ТОЛЬКО для debug-сборки
+    debugImplementation("androidx.compose.ui:ui-tooling-preview")
 
     // Остальные зависимости
     implementation("androidx.core:core-ktx:1.13.1")
