@@ -29,14 +29,13 @@ jobs:
       - name: Сделать gradlew исполняемым
         run: chmod +x gradlew
 
-      # ----- ВОТ ИЗМЕНЕННЫЙ ШАГ -----
-      - name: Очистка и сборка Release APK с помощью Gradle
+      - name: Сборка с подробным логом ошибок
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        # Мы добавили 'clean' перед 'assembleRelease'
-        run: ./gradlew clean assembleRelease
+        # ----- ВОТ ИЗМЕНЕНИЕ: ДОБАВИЛИ --stacktrace -----
+        run: ./gradlew clean assembleRelease --stacktrace
 
       - name: Загрузить артефакт (Release APK)
         uses: actions/upload-artifact@v4
