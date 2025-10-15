@@ -1,4 +1,4 @@
-// ФИНАЛЬНАЯ, КАНОНИЧЕСКАЯ КОНФИГУРАЦИЯ app/build.gradle.kts
+// --- РАДИКАЛЬНОЕ РЕШЕНИЕ: ПОЛНОЕ УДАЛЕНИЕ ПРОБЛЕМНЫХ БИБЛИОТЕК ---
 
 plugins {
     id("com.android.application") version "8.5.1"
@@ -9,15 +9,6 @@ plugins {
 android {
     namespace = "com.example.napominalka"
     compileSdk = 34
-
-    signingConfigs {
-        create("release") {
-            storeFile = file("napominalka-key.jks")
-            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
-            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
-        }
-    }
 
     defaultConfig {
         applicationId = "com.example.napominalka"
@@ -34,7 +25,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -49,17 +39,16 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8" // Верно для Kotlin 1.9.22
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 }
 
 dependencies {
-    // Используем стабильную версию Compose BOM
     val composeBom = platform("androidx.compose:compose-bom:2024.04.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    // Рабочие Compose-библиотеки, которые входят в релиз
+    // Рабочие Compose-библиотеки
     implementation("androidx.activity:activity-compose")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
@@ -67,10 +56,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
     implementation("androidx.navigation:navigation-compose:2.7.7")
     
-    // ----- ФИНАЛЬНОЕ РЕШЕНИЕ -----
-    // Отладочные библиотеки, которые НЕ должны попадать в релиз
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-tooling-preview")
+    // ----- МЫ ПОЛНОСТЬЮ УДАЛИЛИ ui-tooling и ui-tooling-preview -----
 
     // Остальные зависимости
     implementation("androidx.core:core-ktx:1.13.1")
