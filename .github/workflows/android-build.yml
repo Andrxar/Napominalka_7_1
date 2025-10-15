@@ -1,50 +1,30 @@
-#
-# --- ФИНАЛЬНЫЙ РАБОЧИЙ ПРОЦЕСС: СБОРКА DEBUG APK ---
-# Этот файл использует другой, более простой подход, который обходит проблему.
-#
-
-# Название рабочего процесса
 name: Сборка Android-приложения (Debug)
 
-# Триггеры для запуска
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
 
-# Задачи, которые будут выполняться
 jobs:
   build:
-    # Используем последнюю версию Ubuntu для сборки
     runs-on: ubuntu-latest
 
     steps:
-      # Шаг 1: Клонирование вашего репозитория
       - name: Клонирование репозитория
         uses: actions/checkout@v4
 
-      # Шаг 2: Настройка среды Java (JDK)
-      # Кэш здесь безопасен, так как мы не используем проблемные конфигурации
       - name: Настройка JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'
           
-      # Шаг 3: Предоставление прав на выполнение для Gradle Wrapper
       - name: Сделать gradlew исполняемым
         run: chmod +x gradlew
 
-      # Шаг 4: Сборка Debug APK
-      # ----- ГЛАВНОЕ ИЗМЕНЕНИЕ -----
-      # Мы собираем 'assembleDebug'. Для этого не нужны ключи и секреты.
-      # Это самый надежный способ получить рабочий APK.
       - name: Сборка Debug-версии приложения
         run: ./gradlew assembleDebug
 
-      # Шаг 5: Загрузка Debug APK как артефакта
-      # Путь к debug-версии APK отличается.
       - name: Загрузить артефакт (Debug APK)
         uses: actions/upload-artifact@v4
         with:
